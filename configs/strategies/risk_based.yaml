@@ -1,0 +1,18 @@
+# risk_based.yaml —— 风险优化策略配置
+# 用风险模型协方差矩阵 + 优化器替换等权配置
+---
+class: TopBottomNeutralStrategy
+module_path: quant_csi500_mn.strategies.top_bottom_neutral
+
+kwargs:
+  topk: 50
+  bottomk: 50
+  rebalance_freq: month_end
+
+# 风险优化器配置
+risk_optimizer:
+  method: rp              # inv | rp | gmv | mvo
+  lamb: 1.0               # mvo 模式下的风险厌恶系数（越大越惩罚风险）
+  cov_method: shrink      # 协方差估计方法: shrink | structured | poet
+  lookback: 252           # 协方差估计回看窗口
+  min_periods: 60         # 最小有效数据点

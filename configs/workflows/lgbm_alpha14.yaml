@@ -1,0 +1,75 @@
+# lgbm_alpha14.yaml —— Option C 端到端 qrun 配置（占位）
+#
+# 切换到 Option C 时启用此文件：
+#   qrun configs/workflows/lgbm_alpha14.yaml
+#
+# 本文件引用 configs/ 下已有的 handler / strategy 配置，
+# 配合 src/ 下的自定义类，实现一键端到端运行。
+
+# --- 占位：待 Option C 迁移时填充完整 workflow ---
+#
+# 预期结构（参考 Qlib 标准 workflow）：
+#
+# task:
+#   model:
+#     class: LGBModel
+#     module_path: qlib.contrib.model.gbdt
+#     kwargs:
+#       loss: mse
+#       num_leaves: 64
+#       learning_rate: 0.05
+#       n_estimators: 300
+#       early_stopping_rounds: 30
+#       subsample: 0.8
+#       colsample_bytree: 0.7
+#       random_state: 42
+#       verbose: -1
+#       n_jobs: -1
+#
+#   dataset:
+#     class: DatasetH
+#     module_path: qlib.data.dataset
+#     kwargs:
+#       handler:
+#         class: CSI500AlphaHandler
+#         module_path: quant_csi500_mn.handlers.csi500_handler
+#         kwargs:  # → configs/handlers/csi500_alpha14.yaml
+#       segments:
+#         train: [2017-01-01, 2020-12-31]
+#         valid: [2021-01-01, 2021-12-31]
+#         test:  [2022-01-01, 2024-12-31]
+#
+#   record:
+#     - class: SignalRecord
+#       module_path: qlib.workflow.record_temp
+#       kwargs:
+#         model: <MODEL>
+#         dataset: <DATASET>
+#     - class: SigAnaRecord
+#       module_path: qlib.workflow.record_temp
+#       kwargs:
+#         ana_long_short: true
+#         ann_scaler: 252
+#     - class: PortAnaRecord
+#       module_path: qlib.workflow.record_temp
+#       kwargs:
+#         strategy:
+#           class: TopBottomNeutralStrategy
+#           module_path: quant_csi500_mn.strategies.top_bottom_neutral
+#           kwargs: {topk: 50, bottomk: 50}
+#         backtest:
+#           start_time: 2022-01-01
+#           end_time: 2024-12-31
+#           account: 100000000
+#           exchange:
+#             class: Exchange
+#             module_path: qlib.backtest.exchange
+#             kwargs:
+#               limit_threshold: 0.095
+#               deal_price: close
+#               open_cost: 0.0005
+#               close_cost: 0.0015
+#               min_cost: 5
+
+# 当前阶段：Option B（分层独立运行），此文件为占位。
+# 迁移到 Option C 时请参考上方注释填充实际配置。

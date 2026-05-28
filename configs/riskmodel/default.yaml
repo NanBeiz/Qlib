@@ -1,0 +1,30 @@
+# 风险模型配置
+riskmodel:
+  # 协方差估计方法
+  #   shrink      Ledoit-Wolf 收缩估计（最稳健，默认）
+  #   structured  PCA/FA 因子模型
+  #   poet        POET 主成分正交补阈值估计
+  method: shrink
+
+  # --- shrink 方法参数 ---
+  estimator_kwargs:
+    alpha: lw              # lw (Ledoit-Wolf) | oas | 0.0~1.0 (手动指定)
+    target: const_corr     # const_var | const_corr | single_factor
+
+  # --- structured 方法参数（切换到 structured 时取消注释） ---
+  # method: structured
+  # estimator_kwargs:
+  #   factor_model: pca    # pca | fa
+  #   num_factors: 10
+
+  # --- poet 方法参数（切换到 poet 时取消注释） ---
+  # method: poet
+  # estimator_kwargs:
+  #   num_factors: 3
+  #   thresh: 1.0
+  #   thresh_method: soft  # soft | hard | scad
+
+  # 通用参数
+  lookback: 252            # 协方差估计回看窗口（交易日）
+  min_periods: 60          # 最少有效数据点
+  var_confidence: 0.95     # VaR / CVaR 置信水平

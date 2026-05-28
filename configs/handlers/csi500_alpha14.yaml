@@ -1,0 +1,47 @@
+# csi500_alpha14.yaml —— CSI500AlphaHandler 配置
+# 因子表达式从 configs/factors/alpha14.yaml 自动读取，不在此重复。
+# 可直接用于 qrun workflow 中的 handler 段，或通过 init_instance_by_config 实例化。
+---
+class: CSI500AlphaHandler
+module_path: quant_csi500_mn.handlers.csi500_handler
+
+kwargs:
+  instruments: csi500
+  start_time: 2017-01-01
+  end_time: 2024-12-31
+
+  # 因子定义来源（相对于 configs/ 目录的路径）
+  factor_yaml: factors/alpha14.yaml
+
+  infer_processors:
+    - class: ProcessInf
+      module_path: qlib.data.dataset.processor
+    - class: RobustZScoreNorm
+      module_path: qlib.data.dataset.processor
+      kwargs:
+        fields_group: feature
+        clip_outlier: true
+        fit_start_time: 2017-01-01
+        fit_end_time: 2020-12-31
+    - class: IndustryMcapNeutralize
+      module_path: quant_csi500_mn.processors.neutralize
+      kwargs:
+        fields_group: feature
+    - class: Fillna
+      module_path: qlib.data.dataset.processor
+      kwargs:
+        fields_group: feature
+        fill_value: 0
+
+  learn_processors:
+    - class: DropnaLabel
+      module_path: qlib.data.dataset.processor
+      kwargs:
+        fields_group: label
+    - class: CSRankNorm
+      module_path: qlib.data.dataset.processor
+      kwargs:
+        fields_group: label
+
+  process_type: append
+  drop_raw: false

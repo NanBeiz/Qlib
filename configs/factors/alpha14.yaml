@@ -1,0 +1,99 @@
+# alpha14.yaml —— 14 因子定义
+# 方向编码在表达式中：负向因子在公式前加 "-"，不维护 direction 字段
+
+global:
+  provider_uri: ~/.qlib/qlib_data/cn_data
+  region: cn
+  output_dir: outputs/factors
+
+factors:
+  # ---- 低波动组 ----
+  - name: lowvol
+    expression: "0 - (Std($close, 20) / $close)"
+    description: "20日波动率（取负，低波动为正暴露）"
+    group: low_volatility
+    use_in_baseline: true
+
+  # ---- 动量组 ----
+  - name: momentum_12_1
+    expression: "Ref($close, 21) / Ref($close, 252) - 1"
+    description: "12-1月动量（跳过最近1月）"
+    group: momentum
+    use_in_baseline: true
+
+  # ---- 反转组 ----
+  - name: reversal_20
+    expression: "1 - ($close / Ref($close, 20))"
+    description: "20日短期反转"
+    group: reversal
+    use_in_baseline: true
+
+  - name: rev_1
+    expression: "1 - ($close / Ref($close, 1))"
+    description: "1日反转"
+    group: reversal
+    use_in_baseline: true
+
+  - name: rev_5
+    expression: "1 - ($close / Ref($close, 5))"
+    description: "5日反转"
+    group: reversal
+    use_in_baseline: true
+
+  - name: resid_rev_5
+    expression: "1 - ($close / Ref($close, 5))"
+    description: "5日残差反转（工程层截面去均值后为残差）"
+    group: reversal
+    use_in_baseline: true
+
+  # ---- 动量组（短/中窗口） ----
+  - name: mom_20_5
+    expression: "Ref($close, 5) / Ref($close, 20) - 1"
+    description: "20-5日短期动量"
+    group: momentum
+    use_in_baseline: true
+
+  - name: mom_60_5
+    expression: "Ref($close, 5) / Ref($close, 60) - 1"
+    description: "60-5日中期动量"
+    group: momentum
+    use_in_baseline: true
+
+  # ---- 低波动组 ----
+  - name: vol_20
+    expression: "0 - (Std($close, 20) / $close)"
+    description: "20日波动率（独立注册，与lowvol公式相同）"
+    group: low_volatility
+    use_in_baseline: true
+
+  - name: idio_vol_60
+    expression: "0 - Std($close / Ref($close, 1) - 1, 60)"
+    description: "60日特质波动（取负，低特质波动为正暴露）"
+    group: low_volatility
+    use_in_baseline: true
+
+  # ---- 流动性组 ----
+  - name: amihud_20
+    expression: "0 - Mean(Abs($close / Ref($close, 1) - 1) / ($volume * $close), 20)"
+    description: "Amihud非流动性指标（取负，高流动性为正暴露）"
+    group: liquidity
+    use_in_baseline: true
+
+  - name: liq_20
+    expression: "0 - Mean($volume * $close, 20)"
+    description: "20日成交额（取负，低换手为正暴露）"
+    group: liquidity
+    use_in_baseline: true
+
+  # ---- 量价结构组 ----
+  - name: close_pos
+    expression: "($close - $low) / ($high - $low)"
+    description: "收盘价在日内振幅中的位置，(0,1)，高位收盘为看涨信号"
+    group: volume_price
+    use_in_baseline: true
+
+  - name: ret_amount_corr_20
+    expression: "Corr($close / Ref($close, 1) - 1, $volume * $close, 20)"
+    description: "收益率与成交额的20日滚动相关性"
+    group: volume_price
+    use_in_baseline: true

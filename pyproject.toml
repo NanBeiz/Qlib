@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quant_csi500_mn"
+version = "0.1.0"
+description = "CSI500 多因子市场中性策略（基于 Microsoft Qlib）"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "pandas>=1.5",
+    "pyyaml",
+    "lightgbm",
+    "joblib",
+    "tqdm",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "matplotlib",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

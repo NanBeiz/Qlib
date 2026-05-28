@@ -1,0 +1,10 @@
+# top_bottom_neutral.yaml —— TopBottomNeutralStrategy 配置
+# 可直接用于 qrun workflow 中的 strategy 段。
+---
+class: TopBottomNeutralStrategy
+module_path: quant_csi500_mn.strategies.top_bottom_neutral
+
+kwargs:
+  topk: 50
+  bottomk: 50
+  rebalance_freq: month_end

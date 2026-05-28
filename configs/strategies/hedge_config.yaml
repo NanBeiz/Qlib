@@ -1,0 +1,23 @@
+# hedge_config.yaml —— Beta 对冲配置
+# 用于 generate_positions_with_hedge.py 的 --hedge-config 参数
+---
+hedge:
+  # 用于对冲的期货合约代码
+  # IC = 中证500股指期货, IF = 沪深300, IH = 上证50, IM = 中证1000
+  hedge_symbol: IC
+
+  # 对冲模式: full (完全对冲) | partial (部分对冲)
+  hedge_mode: full
+
+  # 对冲比例 (仅 partial 模式生效): 1.0 = 完全对冲, 0.5 = 对冲一半
+  hedge_ratio_target: 1.0
+
+  # 期货对基准的 Beta (通常 IC 对 CSI500 的 Beta ≈ 1.0)
+  # 若基差风险显著可微调，例如 0.95 表示期货对现货的敞口略低
+  futures_beta: 1.0
+
+  # 最小对冲手数阈值，低于此值不执行对冲
+  min_contracts: 0.5
+
+  # 单次对冲比例上限，防止极端仓位
+  max_hedge_ratio: 1.5

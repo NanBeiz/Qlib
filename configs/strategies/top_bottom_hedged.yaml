@@ -1,0 +1,25 @@
+# top_bottom_hedged.yaml —— 带 Beta 对冲的 Top/Bottom 策略配置
+---
+class: TopBottomNeutralStrategy
+module_path: quant_csi500_mn.strategies.top_bottom_neutral
+
+kwargs:
+  topk: 50
+  bottomk: 50
+  rebalance_freq: month_end
+
+# Beta 中性对冲配置
+# 对冲 Beta 基准: CSI500 SH000905（策略池基准）
+# 回测展示基准:   CSI300 SH000300（独立，仅绩效对比）
+hedging:
+  enabled: true
+  hedge_symbol: IC                    # 期货品种，FuturesDataProvider 内部映射到主力合约
+  hedge_mode: full                    # full | partial
+  hedge_ratio_target: 1.0             # partial 模式下的对冲比例 (0~1)
+  futures_beta: 1.0                   # 期货对基准的 Beta（基差修正）
+  min_contracts: 0.5                  # 最小对冲手数阈值
+  max_hedge_ratio: 1.5                # 单次对冲比例上限
+  beta_window: 252                    # Beta 滚动窗口（交易日）
+  beta_min_periods: 60                # Beta 最少有效数据点
+  futures_data_path: outputs/data/futures_csi500.csv
+  portfolio_notional: 100000000       # 组合名义本金 (1 亿)

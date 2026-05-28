@@ -1,0 +1,24 @@
+# _common.yaml —— 全局共享配置，被所有层引用
+market: csi500
+benchmark: SH000300
+provider_uri: ~/.qlib/qlib_data/cn_data
+region: cn
+
+# 时间区间
+train_start: 2017-01-01
+train_end: 2020-12-31
+valid_start: 2021-01-01
+valid_end: 2021-12-31
+test_start: 2022-01-01
+test_end: 2024-12-31
+
+# 缓存（必须开启）
+cache_dir: outputs/cache
+cache_enabled: true
+
+# 交易成本
+cost:
+  open_cost: 0.0005
+  close_cost: 0.0015
+  min_cost: 5
+  limit_threshold: 0.095
