@@ -239,7 +239,7 @@ contracts = net_beta × portfolio_notional / (futures_price × multiplier × fut
 ## 12. 项目结构
 
 ```
-quant_csi500_mn_beta_risk/
+quant_csi500_mn/
 ├── configs/
 │   ├── _common.yaml
 │   ├── factors/alpha14.yaml
@@ -290,7 +290,7 @@ quant_csi500_mn_beta_risk/
 ## 13. 快速开始
 
 ```bash
-cd quant_csi500_mn_beta_risk
+cd quant_csi500_mn
 pip install -e .
 
 # 等权，无对冲
