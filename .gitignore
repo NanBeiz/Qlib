@@ -32,3 +32,6 @@ outputs/
 # OS
 .DS_Store
 Thumbs.db
+
+# Notebooks (placeholder stubs)
+notebooks/
